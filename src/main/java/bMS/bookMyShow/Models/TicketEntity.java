@@ -1,39 +1,37 @@
 package bMS.bookMyShow.Models;
 
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "ticket")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name="tickets")
+@Data
 public class TicketEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String allotted_seat;
+    private String alloted_seats;
 
     private int amount;
 
     private Date booked_at;
 
-    @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL) //one ticket can buy  many seat
-    private List<ShowSeatEntity> ListOfShow;
+    //Here you will connect
+    @ManyToOne
+    @JoinColumn
+    private UserEntity user; //
 
     @ManyToOne
     @JoinColumn
-    private UserEntity user;  //many ticket is connected to one user
+    private ShowEntity show;
 
-     @ManyToOne
-     @JoinColumn
-     private ShowEntity show;
+    @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL)
+    private List<ShowSeatEntity> bookedSeats;
+
 }

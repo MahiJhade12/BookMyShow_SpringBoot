@@ -17,7 +17,7 @@ public class TicketController {
     @RequestMapping("/book_ticket")
     public String bookTicket(BookTicketRequestDto bookTicketRequestDto) {
         try {
-            return bookTicketService.BookTickes(bookTicketRequestDto);
+         //return bookTicketService.(bookTicketRequestDto);
         } catch (Exception e) {
             return "request seats not available";
         }
