@@ -1,4 +1,17 @@
 # BookMyShow_SpringBoot
 
+# Entity
+1 Users
+2 Movie
+3 Shows
+4 Show Seats
+5 Theater
+6 Theater Seats
+7 Ticket
 
-![Screenshot (31)](https://user-images.githubusercontent.com/115030944/215968734-4c226832-d458-4829-9ed8-1e8da847bcbd.png)
+
+![Screenshot (34)](https://user-images.githubusercontent.com/115030944/215969798-38f04e12-ef4c-40e4-b74f-31ddd005e78f.png)
+
+
+
+
