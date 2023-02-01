@@ -1,8 +1,8 @@
 package bMS.bookMyShow.Models;
 
+import javax.persistence.*;
 
 import bMS.bookMyShow.Enums.SeatType;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity
-@Table(name = "show_seat")
+@Table(name = "show_seats")
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 public class ShowSeatEntity {
 
     @Id
@@ -24,22 +24,18 @@ public class ShowSeatEntity {
 
     private String seatNo;
 
-     @Enumerated(value = EnumType.STRING)
-     private SeatType seatType;
+    @Enumerated(value = EnumType.STRING)
+    private SeatType seatType;
 
-     private boolean isAvailable;  //to check if seat it available
+    private boolean booked;
 
-     private Date bookAt;  //automatic we will set its value while booking ticket
-
-
+    private Date bookedAt;
 
     @ManyToOne
     @JoinColumn
-    private  ShowEntity show;  //many show seat can be in a show
+    private ShowEntity show;
 
     @ManyToOne
     @JoinColumn
-    private TicketEntity ticket; //many show seat can buy in one ticket
-
-    //joincolumn -current class child to that class
+    private TicketEntity ticket;
 }

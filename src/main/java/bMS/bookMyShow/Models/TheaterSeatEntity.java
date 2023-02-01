@@ -1,20 +1,18 @@
 package bMS.bookMyShow.Models;
 
+import javax.persistence.*;
 import bMS.bookMyShow.Enums.SeatType;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
-@Table(name = "theater_seat")
+@Table(name="theater_seats")
 @Data
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
 public class TheaterSeatEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,21 +20,19 @@ public class TheaterSeatEntity {
 
     private String seatNo;
 
-     @Enumerated(value = EnumType.STRING)
-     private SeatType seatType;
+    @Enumerated(value = EnumType.STRING)
+    private SeatType seatType;
 
-     private int rate;
+    private int rate;
 
+    @ManyToOne
+    @JoinColumn
+    private TheaterEntity theater;
 
-     //child table unidirectional
-     @ManyToOne
-     @JoinColumn
-     private TheaterEntity theater; //many theater_seat can be in one theater
-
-
-    public TheaterSeatEntity(String seatNo, SeatType seatType, int rate) {
-        this.seatNo=seatNo;
-        this.rate=rate;
-        this.seatType=seatType;
+    public TheaterSeatEntity(String seatNo, SeatType seatType, int rate){
+        this.seatNo = seatNo;
+        this.seatType = seatType;
+        this.rate = rate;
     }
+
 }

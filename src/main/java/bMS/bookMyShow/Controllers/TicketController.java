@@ -2,8 +2,9 @@ package bMS.bookMyShow.Controllers;
 
 
 import bMS.bookMyShow.Dtos.BookTicketRequestDto;
-import bMS.bookMyShow.Services.BookTicketService;
+import bMS.bookMyShow.Services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TicketController {
 
     @Autowired
-    BookTicketService bookTicketService;
+    TicketService bookTicketService;
 
     @RequestMapping("/book_ticket")
-    public String bookTicket(BookTicketRequestDto bookTicketRequestDto) {
+    public String bookTicket( @RequestBody BookTicketRequestDto bookTicketRequestDto) {
         try {
-         //return bookTicketService.(bookTicketRequestDto);
+         return bookTicketService.bookTicket(bookTicketRequestDto);
         } catch (Exception e) {
             return "request seats not available";
         }

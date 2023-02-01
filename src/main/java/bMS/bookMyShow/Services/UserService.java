@@ -12,25 +12,23 @@ import java.util.List;
 @Service
 public class UserService {
 
+
     @Autowired
     UserRepository userRepository;
 
-    public String  createUser(UserRequestDto userRequestDto){
+    public String createUser(UserRequestDto userRequestDto){
 
-        //converted userDto to userEntity
-        UserEntity user= UserEntity.builder().name(userRequestDto.getName())
-                .mobileNo(userRequestDto.getMobileNo()).build();
-      try {
-          userRepository.save(user);
-      }
-      catch(Exception e){
-            return  "user can not be added";
+        //Converted the userRequestDto to UserEntity
+        UserEntity userEntity = UserEntity.builder().name(userRequestDto.getName()).mobile(userRequestDto.getMobileNo()).build();
+
+        try{
+            userRepository.save(userEntity);
+
+        }catch(Exception e){
+            return "user couldnt be added";
         }
-        return "User added successfully";
-
+        return "User added sucessfully";
     }
-
-
     public UserEntity getUserById(int id) {
         try {
             UserEntity user =  userRepository.findById(id).get();

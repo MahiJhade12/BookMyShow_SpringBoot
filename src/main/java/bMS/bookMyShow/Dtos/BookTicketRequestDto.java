@@ -11,16 +11,8 @@ import java.util.List;
 public class BookTicketRequestDto {
 
 
-    private String allotted_seat;
-
-    private int amount;
-
-    private Date booked_at;
-
-    private List< String> requested_seats;
-
+    private List<String> requestSeats;
     private int showId;
-
     private int userId;
 
 

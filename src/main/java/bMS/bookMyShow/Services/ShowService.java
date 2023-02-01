@@ -12,71 +12,79 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+
 public class ShowService {
 
 
     @Autowired
     MovieRepository movieRepository;
+
     @Autowired
     TheaterRepository theaterRepository;
 
+
     @Autowired
-    ShowSeatsRepository showSeatsRepository;
+    ShowSeatsRepository showSeatRepository;
 
     @Autowired
     ShowRepository showRepository;
 
     public String addShow(ShowRequestDto showRequestDto){
-        ShowEntity showEntity=ShowEntity.builder().showTime(showRequestDto.getShowTime())
-                .showDate(showRequestDto.getShowDate())
-                .multiplier(showRequestDto.getMultiplier()).build();
 
 
-        //To add which movie will play in show
-        MovieEntity movieEntity =movieRepository.findByMovieName(showRequestDto.getMovieName());
-
-        // To add in which theater show will play
-        TheaterEntity theaterEntity=theaterRepository.findById(showRequestDto.getTheaterId()).get();
-
-        //adding show list in movie entity
-        movieEntity.getListOfShow().add(showEntity);
-
-        //adding show list in theater entity
-        theaterEntity.getListOfShow().add(showEntity);
+        //Show Entity
+        ShowEntity showEntity = ShowEntity.builder().showDate(showRequestDto.getShowDate()).showTime(showRequestDto.getShowTime()).multiplier(showRequestDto.getMultiplier()).build();
 
 
-        //aading movie and theater in show
-        //doing vice-versa
-        showEntity.setMovie(movieEntity);
+        //You need to get the movieRepo
+        MovieEntity movieEntity = movieRepository.findByMovieName(showRequestDto.getMovieName());
+
+        //You need to get the theater Repository
+
+        TheaterEntity theaterEntity = theaterRepository.findById(showRequestDto.getTheaterId()).get();
+
         showEntity.setTheater(theaterEntity);
+        showEntity.setMovie(movieEntity);
 
-        List<ShowSeatEntity> showSeatEntitiesList= createShowSeats(theaterEntity.getTheaterSeatList());
+        //bcz we are doing a bidirectional mapping :
+        //Optional things :
+//        List<ShowEntity> currentListOfShow = movieEntity.getListOfShows();
+//        currentListOfShow.add(showEntity);
+//        movieEntity.setListOfShows(currentListOfShow);
+        movieEntity.getListOfShows().add(showEntity);
+        theaterEntity.getListOfShows().add(showEntity);
+        //theaterRepository.save(theaterEntity);
 
-        showEntity.setListOfSeats(showSeatEntitiesList);
+        List<ShowSeatEntity> seatEntityList = createShowSeats(theaterEntity.getTheaterSeatEntityList());
 
-        //for each Show seats we need to mark shoeEntity
-        for (ShowSeatEntity showSeat: showSeatEntitiesList){
+        showEntity.setListOfSeats(seatEntityList);
+
+        //For each ShowSeat : we need to mark that to which show it belongs (foriegn key will be filled )
+        for(ShowSeatEntity showSeat:seatEntityList){
             showSeat.setShow(showEntity);
         }
 
         movieRepository.save(movieEntity);
         theaterRepository.save(theaterEntity);
-        //this does not need to be called bcs we are calling above parent function movie
-       // showRepository.save(showEntity);
+        //showRepository.save(showEntity); this doessnt need to be called bcz parent save function is being called.
 
-        return  "Show added successfully";
+        return "Show added successfully";
 
     }
-    public List<ShowSeatEntity> createShowSeats(List<TheaterSeatEntity> theaterSeatEntitiesList){
 
-        List<ShowSeatEntity> showSeatEntities=new ArrayList<>();
-        for (TheaterSeatEntity theaterSeat:theaterSeatEntitiesList){
-            ShowSeatEntity showSeat=ShowSeatEntity.builder()
-                    .seatNo(theaterSeat.getSeatNo()).seatType(theaterSeat.getSeatType()).build();
-               showSeatEntities.add(showSeat);
+    public List<ShowSeatEntity> createShowSeats(List<TheaterSeatEntity> theaterSeatEntityList){
+
+
+        List<ShowSeatEntity> seats = new ArrayList<>();
+
+        for(TheaterSeatEntity theaterSeat: theaterSeatEntityList){
+
+            ShowSeatEntity showSeat = ShowSeatEntity.builder().seatNo(theaterSeat.getSeatNo()).seatType(theaterSeat.getSeatType()).build();
+            seats.add(showSeat);
         }
-        showSeatsRepository.saveAll(showSeatEntities);
-        return showSeatEntities;
-    }
 
+        showSeatRepository.saveAll(seats);
+
+        return seats;
+    }
 }

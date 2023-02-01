@@ -12,17 +12,15 @@ public class MovieService {
     @Autowired
     MovieRepository movieRepository;
 
-    public String createMovie(MovieRequestDto movieRequestDto){
-        MovieEntity movie= MovieEntity.builder().movieName(movieRequestDto.getMovieName()).
-                duration(movieRequestDto.getDuration())
-                .releaseDate(movieRequestDto.getReleaseDate())
-                .build();
-        try {
-            movieRepository.save(movie);
-        }
-        catch (Exception e){
-            return "movie can not add";
-        }
-          return "movie added successfully";
+    public String addMovie(MovieRequestDto movieRequestDto){
+
+        //Convert Dto to Entity layer for saving it to the Database.
+        MovieEntity movie = MovieEntity.builder().movieName(movieRequestDto.getMovieName()).duration(movieRequestDto.getDuration()).releaseDate(movieRequestDto.getReleaseDate()).build();
+
+        movieRepository.save(movie);
+
+        return "Movie Added successfully";
     }
+
+
 }

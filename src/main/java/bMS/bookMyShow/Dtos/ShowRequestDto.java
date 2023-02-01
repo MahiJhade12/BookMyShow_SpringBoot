@@ -8,12 +8,13 @@ import java.time.LocalTime;
 @Data
 public class ShowRequestDto {
 
-   private LocalDate showDate;
+   LocalDate showDate;
 
-   private LocalTime showTime;
+   LocalTime showTime;
 
-   private String movieName;
+   String movieName;
 
-   private int theaterId;
-   private  double multiplier;
+   int theaterId;
+
+   double multiplier;
 }
